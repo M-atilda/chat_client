@@ -1,4 +1,5 @@
-@ECHO off
+REM @ECHO off
+CD %USERPROFILE%\Catan_Chat\chat_client 
 SET appname=Lolita
 SET dependant=HttpClient
 
@@ -60,3 +61,5 @@ IF "%TIMESTAMP1%" == "%TIMESTAMP2%" (
 )
 
 :End
+
+PAUSE
