@@ -8,7 +8,7 @@ Set objShell = WScript.CreateObject("WScript.Shell")
 
 strDesktop = objShell.SpecialFolders("Desktop")
 strFileName = strDesktop + "\Lolita.lnk"
-strTargetPath = "%USERPROFILE%\Catan_Chat\chat_client\exec_lolita.bat"
+strTargetPath = "%USERPROFILE%\Catan_Chat\client\exec_lolita.bat"
 
 Set objShortCut = objShell.CreateShortcut(strFileName)
 objShortCut.TargetPath = strTargetPath

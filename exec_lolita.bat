@@ -1,5 +1,5 @@
 REM @ECHO off
-CD %USERPROFILE%\Catan_Chat\chat_client 
+CD %USERPROFILE%\Catan_Chat\client 
 SET appname=Lolita
 SET dependant=HttpClient
 
