@@ -21,7 +21,7 @@ public class HttpClient {
         StringBuilder result = new StringBuilder();
 		try {
 			socket = new Socket();
-			// ã“ã“ãŒé•ã†ã€‚é€ä¿¡ã—ãŸã„ã‚µãƒ¼ãƒã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ãƒãƒ¼ãƒˆç•ªå·ã‚’å®šç¾©
+			// ‚±‚±‚ªˆá‚¤B‘—M‚µ‚½‚¢ƒT[ƒo‚ÌIPƒAƒhƒŒƒX‚Æƒ|[ƒg”Ô†‚ð’è‹`
 			socket.connect(new InetSocketAddress(m_url_str, m_port_num));
  
 			out = new BufferedWriter(

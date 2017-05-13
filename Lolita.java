@@ -1,3 +1,9 @@
+/*
+ * file       : Lolita.java
+ * author     : Nakagawa Kohei
+ * brief      : Chat system "Lolita"s Client application
+ */
+
 import javax.swing.*;
 import java.awt.Container;
 import java.awt.BorderLayout;
