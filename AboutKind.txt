@@ -1,0 +1,12 @@
+###kind [0~225]###
+
+[0] talkdata(S -> C) 
+
+	if (comment == File) {comment = "IMG_ROLIROLI" + comment;}
+	return login status + ("roliroli" + id + "roliroli" + comment)*n;
+
+[1] talkdata(C -> S)
+
+	if (comment == File) {comment = "IMG_ROLIROLI\n" + comment;}
+	return comment;
+

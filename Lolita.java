@@ -77,7 +77,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
   public static void main(String args[]){
 		mynum = "-1";
 	try {
-		File file_config = new File(".\\Lolita\\setting\\config.txt");
+		File file_config = new File(".\\setting\\config.txt");
 		BufferedReader br_config = new BufferedReader(new FileReader(file_config));
 		mynum = br_config.readLine();
 		br_config.close();
@@ -182,7 +182,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
     setSize(WIDTH, HEIGHT);
 	setLocationRelativeTo(null);
     addWindowListener(this);
-	ImageIcon frameicon = new ImageIcon("./Lolita/setting/picture/catan.jpg");
+	ImageIcon frameicon = new ImageIcon("./setting/picture/catan.jpg");
 	setIconImage(frameicon.getImage());
 
 	JMenuBar menubar = new JMenuBar();
@@ -226,7 +226,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p11.setLayout(new BorderLayout());
 	p111 = new JPanel();
 	p111.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon1 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon1 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label11 = new JLabel(icon1);
 	p111.add(label11);
 	JPanel p112 = new JPanel();
@@ -251,7 +251,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p12.setLayout(new BorderLayout());
 	p121 = new JPanel();
 	p121.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon2 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon2 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label21 = new JLabel(icon2);
 	p121.add(label21);
 	JPanel p122 = new JPanel();
@@ -276,7 +276,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p13.setLayout(new BorderLayout());
 	p131 = new JPanel();
 	p131.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon3 = new ImageIcon("./Lolita/setting/picture/icon3.jpg");
+	ImageIcon icon3 = new ImageIcon("./setting/picture/icon3.jpg");
 	JLabel label31 = new JLabel(icon3);
 	p131.add(label31);
 	JPanel p132 = new JPanel();
@@ -301,7 +301,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p14.setLayout(new BorderLayout());
 	p141 = new JPanel();
 	p141.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon4 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon4 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label41 = new JLabel(icon4);
 	p141.add(label41);
 	JPanel p142 = new JPanel();
@@ -326,7 +326,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p15.setLayout(new BorderLayout());
 	p151 = new JPanel();
 	p151.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon5 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon5 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label51 = new JLabel(icon5);
 	p151.add(label51);
 	JPanel p152 = new JPanel();
@@ -351,7 +351,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p16.setLayout(new BorderLayout());
 	p161 = new JPanel();
 	p161.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon6 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon6 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label61 = new JLabel(icon6);
 	p161.add(label61);
 	JPanel p162 = new JPanel();
@@ -376,7 +376,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p17.setLayout(new BorderLayout());
 	p171 = new JPanel();
 	p171.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon7 = new ImageIcon("./Lolita/setting/picture/sample.jpg");
+	ImageIcon icon7 = new ImageIcon("./setting/picture/sample.jpg");
 	JLabel label71 = new JLabel(icon5);
 	p171.add(label71);
 	JPanel p172 = new JPanel();
@@ -477,7 +477,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 			text_edit_name.setText("");
 		}
 	} else if (cmd.equals("button1_edit_picture")) {
-		JFileChooser fc_edit_picture = new JFileChooser(".\\Lolita\\setting");
+		JFileChooser fc_edit_picture = new JFileChooser(".\\setting");
 		int selected = fc_edit_picture.showOpenDialog(this);
 		if (selected == JFileChooser.APPROVE_OPTION) {
 			File file = fc_edit_picture.getSelectedFile();
@@ -505,7 +505,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		frame_detail3.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
 		frame_detail3.setVisible(true);
 		JPanel panel_detail3 = new JPanel();
-		panel_detail3.add(new JLabel(new ImageIcon("./Lolita/setting/picture/Mayoi.jpg")));
+		panel_detail3.add(new JLabel(new ImageIcon("./setting/picture/Mayoi.jpg")));
 		JScrollPane sp_detail3 = new JScrollPane(panel_detail3);
 		frame_detail3.add(sp_detail3);
 	} else if (cmd.equals("detail4")) {
