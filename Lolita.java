@@ -129,6 +129,45 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	}catch(IOException E) {
 		System.out.println(E);
 	} */
+	try{
+		File historyfile = new File(".\\setting\\talkhistory.txt");
+		BufferedReader br = new BufferedReader(new FileReader(historyfile));
+		String str;
+		int mycomment = 0;
+  		while((str = br.readLine()) != null){
+   			if(str.endsWith("roliroli")){
+				JLabel blanclabel = new JLabel(" ");
+				blanclabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
+				printpanel.add(blanclabel);
+				JLabel namelabel = new JLabel("[" + name[Integer.parseInt(str.substring(0, 1))] + "]");
+				namelabel.setFont(new Font("MSゴシック", Font.ITALIC, 15));
+				printpanel.add(namelabel);
+				if(Integer.parseInt(str.substring(0, 1)) == id){
+					mycomment = 1;
+				}else{
+					mycomment = 0;
+				}
+			} else {
+				JLabel printlabel = new JLabel(str);
+				printlabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
+				if(mycomment == 0){
+					printlabel.setBackground(Color.GREEN);
+				}else{
+					printlabel.setBackground(Color.CYAN);
+				}
+				printlabel.setOpaque(true);
+				printpanel.add(printlabel);
+			}
+			printpanel.revalidate();
+ 		}
+		JLabel blanclabel = new JLabel(" ");
+		blanclabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
+		printpanel.add(blanclabel);
+		printpanel.revalidate();
+
+	}catch(IOException ioe){
+		System.out.println(ioe);
+	}
 	while (true) {
 //		getdata = hc.request(mynum + "\n");
 //		getdata = "TFTTFTF5roli留年した。roli3roliwwwroli2roliざまあ";
@@ -178,12 +217,22 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 			p171.setBackground(Color.GRAY);
 		}
 		for (int i = 1; i <= (talk.length-1)/2; i++) {
-//			printarea.append("[" + name[Integer.parseInt(talk[2*i])] + "] " + talk[2*i+1] + "\n\n");
+		  if(Integer.parseInt(talk[2*i-1]) != -1){
+//			printarea.append("[" + name[Integer.parseInt(talk[2*i-1])] + "] " + talk[2*i] + "\n\n");
 			JLabel namelabel = new JLabel("[" + name[Integer.parseInt(talk[2*i-1])] + "]");
 			namelabel.setFont(new Font("MSゴシック", Font.ITALIC, 15));
 			printpanel.add(namelabel);
 			JLabel printlabel = new JLabel(talk[2*i]);
 			printlabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
+			try {
+				File historyfile = new File(".\\setting\\talkhistory.txt");
+				FileWriter fw = new FileWriter(historyfile, true);
+				fw.write(talk[2*i-1] + "roliroli\n");
+				fw.write(talk[2*i] + "\n");
+				fw.close();
+			}catch(IOException ioe){
+				System.out.println(ioe);
+			}
 		  if (Integer.parseInt(talk[2*i-1]) == id) {
 			printlabel.setBackground(Color.CYAN);
 		  } else {
@@ -195,6 +244,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 			blanclabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
 			printpanel.add(blanclabel);
 			printpanel.revalidate();
+		  }
 		}
 		label12.setText(name[0]);
 		label22.setText(name[1]);
@@ -603,7 +653,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		JPanel panel_about_Lolita = new JPanel();
 		JTextArea area_about_Lolita = new JTextArea(15, 15);
 		area_about_Lolita.setFont(new Font("MSゴシック", Font.PLAIN, 30));
-		area_about_Lolita.setText("<<Lolitaについて>>\nWBAのメンバーのみ使用が許される\n最も便利なチャットツールである。\nLolita最高。\n\n<<Staff>>\nIwamoto Yuma\nNakagawa Kohei\nMaeda Tomonori");
+		area_about_Lolita.setText("<<Lolitaについて>>\nWBAのメンバーのみ使用が許される\n最も便利なチャットツールである。\nLolita最高。\n(なお、アイコンは100*100ピクセル程度で頼む)\n\n<<Staff>>\nIwamoto Yuma\nNakagawa Kohei\nMaeda Tomonori");
 		panel_about_Lolita.add(area_about_Lolita);
 		frame_about_Lolita.add(panel_about_Lolita);
 	} else if (cmd.equals("detail1")) {
