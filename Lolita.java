@@ -254,7 +254,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		label62.setText(name[5]);
 		label72.setText(name[6]);
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(1000);
 		}catch(InterruptedException e){}
 	}
   }
