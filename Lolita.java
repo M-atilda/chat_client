@@ -23,13 +23,22 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 class Lolita extends JFrame implements ActionListener,WindowListener{
 
   static String URL = "192.168.8.105";
   static int PORT = 1707;
-  static int WIDTH = 1200;
-  static int HEIGHT = 1200;
+  static int WIDTH;
+  static int HEIGHT;
+  static JLabel idlabel = new JLabel("id");
+  static JLabel passlabel = new JLabel("pass");
+  static JTextField idtext = new JTextField(5);
+  static JTextField passtext = new JTextField(10);
+  static JButton loginbtn = new JButton("login");
+  static JLabel loginCommentLabel = new JLabel("");
+  static volatile boolean loginok = false;
   static JTextField text_edit_name = new JTextField(10);
   static JButton btn_edit_name = new JButton("OK");
   static JLabel label_edit_name = new JLabel("Imput your name.");
@@ -70,22 +79,37 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
   static JButton btn6;
   static JButton btn7;
   static String[] name = {"岩本", "窪田", "中川", "早川", "平野", "藤田", "前田"};
-  static String mynum;
-  static HttpClient hc = new HttpClient(URL, PORT);
-  static String getdata;
+  static int id = -1;
+  static byte[] pass_b;
+//  static HttpClient hc = new HttpClient(URL, PORT);
+//  static String getdata;
+  static Protocol prot = new Protocol(URL, PORT);
+  static PacketMaker pm = new PacketMaker();
+  static PacketReader pr = new PacketReader();
+  static Packet sendpacket;
+  static Packet recipacket;
+  static String[] talk;
+  static int doyousend = 0;
 
-  public static void main(String args[]){
-		mynum = "-1";
-	try {
+  public static void main(String[] args){
+		if(args.length == 2){
+			WIDTH = Integer.parseInt(args[0]);
+			HEIGHT = Integer.parseInt(args[1]);
+		} else {
+			WIDTH = 1000;
+			HEIGHT = 1000;
+		}
+		
+/*	try {
 		File file_config = new File(".\\setting\\config.txt");
 		BufferedReader br_config = new BufferedReader(new FileReader(file_config));
-		mynum = br_config.readLine();
+		id = Integer.parseInt(br_config.readLine());
 		br_config.close();
 	}catch(FileNotFoundException E) {
 		System.out.println(E);
 	}catch(IOException E) {
 		System.out.println(E);
-	}
+	}*/
 
     Lolita frame = new Lolita("World Boardgame Association");
     frame.setVisible(true);
@@ -107,9 +131,17 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	} */
 	while (true) {
 //		getdata = hc.request(mynum + "\n");
-		getdata = "TFTTFTF5roli留年した。roli3roliwwwroli2roliざまあ";
-		String[] talk = talkdata(getdata);
-		boolean[] online = onlinedata(getdata);
+//		getdata = "TFTTFTF5roli留年した。roli3roliwwwroli2roliざまあ";
+//		String[] talk = talkdata(getdata);
+		if(doyousend == 0){
+			sendpacket = pm.make_1(id, pass_b, "");
+			recipacket = prot.request(sendpacket);
+			talk = pr.read_0(recipacket.getData());
+		}else{
+			doyousend = 0;
+		}
+//		for(int i = 0; i < talk.length; i++){System.out.println(talk[i]);}
+		boolean[] online = onlinedata(talk[0]);
 		if (online[0]) {
 			p111.setBackground(Color.RED);
 		} else {
@@ -145,14 +177,14 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		} else {
 			p171.setBackground(Color.GRAY);
 		}
-		for (int i = 0; i < talk.length/2; i++) {
+		for (int i = 1; i <= (talk.length-1)/2; i++) {
 //			printarea.append("[" + name[Integer.parseInt(talk[2*i])] + "] " + talk[2*i+1] + "\n\n");
-			JLabel namelabel = new JLabel("[" + name[Integer.parseInt(talk[2*i])] + "]");
+			JLabel namelabel = new JLabel("[" + name[Integer.parseInt(talk[2*i-1])] + "]");
 			namelabel.setFont(new Font("MSゴシック", Font.ITALIC, 15));
 			printpanel.add(namelabel);
-			JLabel printlabel = new JLabel(talk[2*i+1]);
+			JLabel printlabel = new JLabel(talk[2*i]);
 			printlabel.setFont(new Font("MSゴシック", Font.BOLD, 25));
-		  if (talk[2*i].equals(mynum)) {
+		  if (Integer.parseInt(talk[2*i-1]) == id) {
 			printlabel.setBackground(Color.CYAN);
 		  } else {
 			printlabel.setBackground(Color.GREEN);
@@ -178,6 +210,32 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
   }
 
   Lolita(String title){
+
+		JFrame loginframe = new JFrame("Login");
+		loginframe.setBounds(WIDTH/5, HEIGHT/5, 2*WIDTH/5, HEIGHT/5);
+		loginframe.setVisible(true);
+		JPanel loginpanel = new JPanel();
+		loginpanel.add(idlabel);
+		loginpanel.add(idtext);
+		loginpanel.add(passlabel);
+		loginpanel.add(passtext);
+		loginbtn.addActionListener(this);
+		loginbtn.setActionCommand("login");
+		loginpanel.add(loginbtn);
+		loginframe.add(loginpanel);
+		while(!(loginok)){}
+		pass_b = recipacket.getPass();
+		for(int i = 0; i < 7; i++){
+			sendpacket = pm.make_3(id, pass_b, "icon" + i + ".jpg");
+			recipacket = prot.request(sendpacket);
+			BufferedImage img = pr.read_2(recipacket.getData());
+			try{
+				ImageIO.write(img, "jpg", new File("./setting/picture/icon" + i + ".jpg"));
+			} catch(IOException ioe){
+				System.out.println(ioe);
+			}
+		}
+
     setTitle(title);
     setSize(WIDTH, HEIGHT);
 	setLocationRelativeTo(null);
@@ -226,7 +284,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p11.setLayout(new BorderLayout());
 	p111 = new JPanel();
 	p111.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon1 = new ImageIcon("./setting/picture/sample.jpg");
+	ImageIcon icon1 = new ImageIcon("./setting/picture/icon0.jpg");
 	JLabel label11 = new JLabel(icon1);
 	p111.add(label11);
 	JPanel p112 = new JPanel();
@@ -251,7 +309,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p12.setLayout(new BorderLayout());
 	p121 = new JPanel();
 	p121.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon2 = new ImageIcon("./setting/picture/sample.jpg");
+	ImageIcon icon2 = new ImageIcon("./setting/picture/icon1.jpg");
 	JLabel label21 = new JLabel(icon2);
 	p121.add(label21);
 	JPanel p122 = new JPanel();
@@ -276,7 +334,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p13.setLayout(new BorderLayout());
 	p131 = new JPanel();
 	p131.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon3 = new ImageIcon("./setting/picture/icon3.jpg");
+	ImageIcon icon3 = new ImageIcon("./setting/picture/icon2.jpg");
 	JLabel label31 = new JLabel(icon3);
 	p131.add(label31);
 	JPanel p132 = new JPanel();
@@ -301,7 +359,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p14.setLayout(new BorderLayout());
 	p141 = new JPanel();
 	p141.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon4 = new ImageIcon("./setting/picture/sample.jpg");
+	ImageIcon icon4 = new ImageIcon("./setting/picture/icon3.jpg");
 	JLabel label41 = new JLabel(icon4);
 	p141.add(label41);
 	JPanel p142 = new JPanel();
@@ -326,7 +384,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p15.setLayout(new BorderLayout());
 	p151 = new JPanel();
 	p151.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon5 = new ImageIcon("./setting/picture/sample.jpg");
+	ImageIcon icon5 = new ImageIcon("./setting/picture/icon4.jpg");
 	JLabel label51 = new JLabel(icon5);
 	p151.add(label51);
 	JPanel p152 = new JPanel();
@@ -351,7 +409,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p16.setLayout(new BorderLayout());
 	p161 = new JPanel();
 	p161.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon6 = new ImageIcon("./setting/picture/sample.jpg");
+	ImageIcon icon6 = new ImageIcon("./setting/picture/icon5.jpg");
 	JLabel label61 = new JLabel(icon6);
 	p161.add(label61);
 	JPanel p162 = new JPanel();
@@ -376,8 +434,8 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p17.setLayout(new BorderLayout());
 	p171 = new JPanel();
 	p171.setPreferredSize(new Dimension(12*WIDTH/100, 12*HEIGHT/100));
-	ImageIcon icon7 = new ImageIcon("./setting/picture/sample.jpg");
-	JLabel label71 = new JLabel(icon5);
+	ImageIcon icon7 = new ImageIcon("./setting/picture/icon6.jpg");
+	JLabel label71 = new JLabel(icon7);
 	p171.add(label71);
 	JPanel p172 = new JPanel();
 	label72 = new JLabel(name[6]);
@@ -436,10 +494,13 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	if (cmd.equals("send")) {
 		String text = sendarea.getText();
 		if (!(text.isEmpty())) {
-			String senddata = mynum + "\n" + text + "\n";
+			sendpacket = pm.make_1(id, pass_b, text);
+			recipacket = prot.request(sendpacket);
+			talk = pr.read_0(recipacket.getData());
 //			hc.request(senddata);
-			System.out.println(senddata);
+//			System.out.println(senddata);
 			sendarea.setText("");
+			doyousend = 1;
 		}
 	} else if (cmd.equals("edit_name")) {
 		System.out.println("Edit_name pushed.");
@@ -472,12 +533,12 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	} else if (cmd.equals("button_edit_name")) {
 		String newname = text_edit_name.getText();
 		if (!(newname.isEmpty())) {
-			name[Integer.parseInt(mynum)] = newname;
+			name[id] = newname;
 			label_edit_name.setText("Wow, so cool name.");
 			text_edit_name.setText("");
 		}
 	} else if (cmd.equals("button1_edit_picture")) {
-		JFileChooser fc_edit_picture = new JFileChooser(".\\setting");
+		JFileChooser fc_edit_picture = new JFileChooser(".\\setting\\picture");
 		int selected = fc_edit_picture.showOpenDialog(this);
 		if (selected == JFileChooser.APPROVE_OPTION) {
 			File file = fc_edit_picture.getSelectedFile();
@@ -487,6 +548,33 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		String filename = text_edit_picture.getText();
 		if (!(filename.isEmpty())) {
 			if (filename.endsWith(".jpg")) {
+				ArrayList<Byte> result_buffer = new ArrayList<Byte>();
+				try{
+					FileInputStream fis = new FileInputStream(new File("./setting/picture/" + filename));
+					int readlength;
+					byte[] buffer = new byte[1024];
+					do{
+						readlength = fis.read(buffer);
+						for(int i = 0; i < readlength; i++){
+							result_buffer.add(buffer[i]);
+						}
+					}while(readlength == 1024);
+					fis.close();
+				}catch(IOException ioe){
+					System.out.println(ioe);
+				}
+				byte[] imgdata = new byte[result_buffer.size()];
+				for(int i = 0; i < result_buffer.size(); i++){
+					imgdata[i] = result_buffer.get(i);
+				}
+				sendpacket = pm.make_5(id, pass_b, imgdata);
+				recipacket = prot.request(sendpacket);
+				if(pr.read_4(recipacket.getData()) == 'T') {
+					System.out.println("送れた");
+				}else{
+					System.out.println("だめ");
+				}
+
 				label_edit_picture.setText("Wow, so cool picture.");
 			} else {
 				label_edit_picture.setText("Fuck. It's not jpf-file.");
@@ -524,6 +612,25 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		JFrame frame_detail7 = new JFrame("About " + name[6]);
 		frame_detail7.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
 		frame_detail7.setVisible(true);
+	} else if (cmd.equals("login")) {
+		String id_s = idtext.getText();
+		String pass = passtext.getText();
+		if(!(id_s.isEmpty() || pass.isEmpty())) {
+			id = Integer.parseInt(id_s);
+			sendpacket = pm.make_255(id, pass);
+			recipacket = prot.request(sendpacket);
+			char torf = pr.read_254(recipacket.getData());
+			System.out.println("1");
+			if(torf == 'T') {
+				loginok = true;
+//				pass_b = recipacket.getPass();
+
+				System.out.println("2");
+			}else{
+				loginCommentLabel.setText("id or pass is wrong.");
+				System.out.println("3");
+			}
+		}
 	}
  }
 

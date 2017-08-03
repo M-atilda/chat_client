@@ -1,12 +1,35 @@
-###kind [0~225]###
+	//kind [0~225]//
 
 [0] talkdata(S -> C) 
 
-	if (comment == File) {comment = "IMG_ROLIROLI" + comment;}
 	return login status + ("roliroli" + id + "roliroli" + comment)*n;
 
 [1] talkdata(C -> S)
 
-	if (comment == File) {comment = "IMG_ROLIROLI\n" + comment;}
 	return comment;
 
+[2] image(S -> C)
+
+[3] image please(C -> S) file name;
+
+[4] image get ok(S -> C) T or F;
+
+[5] image(noname)(C -> S)
+
+[6]
+
+[7] image(withname)(C -> S)
+
+
+
+
+
+
+[254] login(S -> C)
+
+	if (password is correct) {return T;(header‚É¡Œã—p‚¢‚épass(8byte)‚ğ‚¢‚ê‚é)}
+	else {return F;}
+
+[255] login(C -> S) 
+
+	return password;(pass = byte[]{0,...,0})

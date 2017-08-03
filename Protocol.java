@@ -4,15 +4,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 public class Protocol {
+ static String URL;
+ static int PORT;
+ Protocol(String url, int port){
+	URL = url;
+	PORT = port;
+ }
 
- public Packet recievePacket(InputStream is) {
+ public Packet recievePacket(InputStream is) {                   //is‚©‚ç‚Ìbyte—ñ‚ðPacket‚É‚µ‚Ä•Ô‚·
 	ArrayList<Byte> result_buffer = new ArrayList<Byte>();
 	byte[] temp_buffer = new byte[1024];
-	byte[] ID = new byte[1];
-	byte KIND;
-	byte[] PASS;
+	byte id_b;
+	byte kind_b;
+	byte[] pass;
 	byte[] data;
 	try {
 		int len;
@@ -21,32 +29,40 @@ public class Protocol {
 				result_buffer.add(temp_buffer[i]);
 			}
 		}
-		ID[0] = result_buffer.get(0);
-		KIND = result_buffer.get(1);
-		PASS = new byte[8];
+		id_b = result_buffer.get(0);
+		kind_b = result_buffer.get(1);
+		pass = new byte[8];
 		for (int i = 0; i < 8; i++) {
-			PASS[i] = result_buffer.get(i+2);
+			pass[i] = result_buffer.get(i+2);
 		}
-		data = new byte[result_buffer.size()];
-		for (int i = 10; i < result_buffer.size(); i++) {
-			data[i-10] = result_buffer.get(i);
+		data = new byte[result_buffer.size()-10];
+		for (int i = 0; i < result_buffer.size()-10; i++) {
+			data[i] = result_buffer.get(i+10);
 		}
 		is.close();
-		return new Packet(ByteBuffer.wrap(ID).getInt(), (char)KIND, PASS.toString(), data);
+		return new Packet((int)id_b, (int)kind_b, pass, data);
  	} catch (IOException e) {
 		System.out.println(e);
-		PASS = new byte[0];
+		pass = new byte[0];
 		data = new byte[0];
-		return new Packet(0, '0', PASS.toString(), data);
+		return new Packet(0, 0, pass, data);
 	}
  }
 
- public boolean sendPacket(OutputStream os ,Packet p) {
-	byte[] ID = ByteBuffer.allocate(4).putInt(p.getId()).array();
-	byte KIND = (byte)p.getKind();
-	byte[] PASS = p.getPass().getBytes();
+ public boolean sendPacket(OutputStream os ,Packet p) {              //Packet‚ðbyte—ñ‚É‚µ‚Äos‚É—¬‚·
+	byte id_b = (byte)p.getId();
+	byte kind_b = (byte)p.getKind();
+	byte[] pass = p.getPass();
 	byte[] data = p.getData();
 	byte[] packet = new byte[10 + data.length];
+	packet[0] = id_b;
+	packet[1] = kind_b;
+	for (int i = 0; i < 8; i++) {
+		packet[i+2] = pass[i];
+	}
+	for (int i = 0; i < data.length; i++) {
+		packet[i+10] = data[i];
+	}
 	try {
 		os.write(packet, 0, packet.length);
 		return true;
@@ -54,6 +70,27 @@ public class Protocol {
 		System.out.println(e);
 		return false;
 	}
+ }
+
+ public Packet request(Packet sendp) {
+	Socket socket = null;
+	InputStream is = null;
+	OutputStream os = null;
+	try{
+	socket = new Socket(URL, PORT);
+	is = socket.getInputStream();
+	os = socket.getOutputStream();
+	}catch(IOException ioe){
+		System.out.println(ioe);
+	}
+	sendPacket(os, sendp);
+	Packet recievep = recievePacket(is);
+	try{
+		socket.close();
+	}catch(IOException ioe){
+		System.out.println(ioe);
+	}
+	return recievep;
  }
 
 }

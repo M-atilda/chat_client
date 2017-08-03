@@ -1,10 +1,10 @@
 public class Packet{
  private int id;
- private char kind;
- private String pass;
+ private int kind;
+ private byte[] pass;
  private byte[] data;
 
- Packet(int id, char kind, String pass, byte[] data) {
+ Packet(int id, int kind, byte[] pass, byte[] data) {
 	this.id = id;
 	this.kind = kind;
 	this.pass = pass;
@@ -19,19 +19,19 @@ public class Packet{
 	this.id = id;
  }
 
- public char getKind() {
+ public int getKind() {
 	return this.kind;
  }
 
- public void setKind(char kind) {
+ public void setKind(int kind) {
 	this.kind = kind;
  }
 
- public String getPass() {
+ public byte[] getPass() {
 	return this.pass;
 }
 
- public void setPass(String pss) {
+ public void setPass(byte[] pass) {
 	this.pass = pass;
  }
 

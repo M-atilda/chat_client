@@ -1,8 +1,8 @@
 ### header ###
-10 byte
-1* id
-1* kind
-8(* password <client>)
+14 byte
+1* id   (int)
+1* kind (int)
+8(* password <client>)  (byte[8])
 
 ### kind ###
 0 ~ 255
@@ -43,7 +43,9 @@ S* talk(receive)  ... login status  (name comment)*
     <client>
     サンワツログイン
   3
-  3
+  255
+  NULL
+  8
   croisson
   LOGIN_ROLIROLI
 
