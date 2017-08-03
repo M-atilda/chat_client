@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
 
 class Lolita extends JFrame implements ActionListener,WindowListener{
 
-  static String URL = "192.168.8.105";
+  static String URL = "14.3.2.39";
   static int PORT = 1707;
   static int WIDTH;
   static int HEIGHT;
@@ -225,6 +225,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		loginframe.add(loginpanel);
 		while(!(loginok)){}
 		pass_b = recipacket.getPass();
+		loginframe.setVisible(false);
 		for(int i = 0; i < 7; i++){
 			sendpacket = pm.make_3(id, pass_b, "icon" + i + ".jpg");
 			recipacket = prot.request(sendpacket);
@@ -246,21 +247,29 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	JMenuBar menubar = new JMenuBar();
 	JMenu menu0 = new JMenu("File");
 	JMenu menu1 = new JMenu("Edit");
+	JMenu menu2 = new JMenu("Help");
 	JMenuItem item11 = new JMenuItem("name");
 	item11.addActionListener(this);
 	item11.setActionCommand("edit_name");
 	JMenuItem item12 = new JMenuItem("picture");
 	item12.addActionListener(this);
 	item12.setActionCommand("edit_picture");
+	JMenuItem item21 = new JMenuItem("About Lolita");
+	item21.addActionListener(this);
+	item21.setActionCommand("about Lolita");
 	menu1.add(item11);
 	menu1.add(item12);
+	menu2.add(item21);
 	menubar.add(menu0);
 	menubar.add(menu1);
+	menubar.add(menu2);
 	setJMenuBar(menubar);
 	menu0.setFont(new Font("Arial", Font.BOLD, 20));
 	menu1.setFont(new Font("Arial", Font.BOLD, 20));
+	menu2.setFont(new Font("Arial", Font.BOLD, 20));
 	item11.setFont(new Font("Arial", Font.PLAIN, 18));
 	item12.setFont(new Font("Arial", Font.PLAIN, 18));
+	item21.setFont(new Font("Arial", Font.PLAIN, 18));
 	text_edit_name.setFont(new Font("MSゴシック", Font.PLAIN, 25));
 	btn_edit_name.addActionListener(this);
 	btn_edit_name.setActionCommand("button_edit_name");
@@ -586,6 +595,17 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 				label_edit_picture.setText("Fuck. It's not jpf-file.");
 			}
 		}
+	} else if (cmd.equals("about Lolita")) {
+		JFrame frame_about_Lolita = new JFrame("About Lolita");
+		frame_about_Lolita.setSize(2*WIDTH/3, 2*HEIGHT/3);
+		frame_about_Lolita.setLocationRelativeTo(null);
+		frame_about_Lolita.setVisible(true);
+		JPanel panel_about_Lolita = new JPanel();
+		JTextArea area_about_Lolita = new JTextArea(15, 15);
+		area_about_Lolita.setFont(new Font("MSゴシック", Font.PLAIN, 30));
+		area_about_Lolita.setText("<<Lolitaについて>>\nWBAのメンバーのみ使用が許される\n最も便利なチャットツールである。\nLolita最高。\n\n<<Staff>>\nIwamoto Yuma\nNakagawa Kohei\nMaeda Tomonori");
+		panel_about_Lolita.add(area_about_Lolita);
+		frame_about_Lolita.add(panel_about_Lolita);
 	} else if (cmd.equals("detail1")) {
 		JFrame frame_detail1 = new JFrame("About " + name[0]);
 		frame_detail1.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
@@ -598,10 +618,10 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		JFrame frame_detail3 = new JFrame("About " + name[2]);
 		frame_detail3.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
 		frame_detail3.setVisible(true);
-		JPanel panel_detail3 = new JPanel();
+/*		JPanel panel_detail3 = new JPanel();
 		panel_detail3.add(new JLabel(new ImageIcon("./setting/picture/Mayoi.jpg")));
 		JScrollPane sp_detail3 = new JScrollPane(panel_detail3);
-		frame_detail3.add(sp_detail3);
+		frame_detail3.add(sp_detail3);*/
 	} else if (cmd.equals("detail4")) {
 		JFrame frame_detail4 = new JFrame("About " + name[3]);
 		frame_detail4.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
@@ -626,15 +646,15 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 			sendpacket = pm.make_255(id, pass);
 			recipacket = prot.request(sendpacket);
 			char torf = pr.read_254(recipacket.getData());
-			System.out.println("1");
+//			System.out.println("1");
 			if(torf == 'T') {
 				loginok = true;
 //				pass_b = recipacket.getPass();
 
-				System.out.println("2");
+//				System.out.println("2");
 			}else{
 				loginCommentLabel.setText("id or pass is wrong.");
-				System.out.println("3");
+//				System.out.println("3");
 			}
 		}
 	}
