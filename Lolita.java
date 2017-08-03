@@ -274,6 +274,10 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	btn2_edit_picture.setActionCommand("button2_edit_picture");
 	label_edit_picture.setFont(new Font("Arial", Font.PLAIN, 20));
 
+	JPanel mainpanel = new JPanel();
+	mainpanel.setPreferredSize(new Dimension(1000, 1000));
+	mainpanel.setLayout(new BorderLayout());
+
 	JPanel p1 = new JPanel();
 	p1.setPreferredSize(new Dimension(WIDTH/4, 9*HEIGHT/10));
 	p1.setBackground(Color.BLUE);
@@ -454,7 +458,7 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p17.add(p172, BorderLayout.CENTER);
 	p1.add(p17);
 
-	getContentPane().add(p1, BorderLayout.EAST);
+	mainpanel.add(p1, BorderLayout.EAST);
 
 	JPanel p2 = new JPanel();
 	p2.setBackground(Color.ORANGE);
@@ -484,7 +488,9 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 	p22.add(scrollpane2);
 	p22.add(btn);
 	p2.add(p22, BorderLayout.SOUTH);
-	getContentPane().add(p2, BorderLayout.CENTER);
+	mainpanel.add(p2, BorderLayout.CENTER);
+	JScrollPane mainScroll = new JScrollPane(mainpanel);
+	getContentPane().add(mainScroll);
 
   }
 
