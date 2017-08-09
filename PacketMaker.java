@@ -4,12 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 public class PacketMaker {  //id,pass‚Ædata‚©‚çPacketclass‚ð‚Â‚­‚é
 							//input  : id , pass(loginŽž‚Í‚È‚µ), some data (depend on packet.kind)
 							//output : Packet
 
- private byte[] StringToBytes (String s) {
+/* private byte[] StringToBytes (String s) {
 	char[] c = s.toCharArray();
 	int len = c.length;
 	byte[] b = new byte[len];
@@ -17,7 +18,18 @@ public class PacketMaker {  //id,pass‚Ædata‚©‚çPacketclass‚ð‚Â‚­‚é
 		b[i] = (byte)c[i];
 	}
 	return b;
+ }*/
+ private byte[] StringToBytes(String str){
+	byte[] bytes;
+	try{
+		bytes = str.getBytes("UTF-8");
+	}catch(UnsupportedEncodingException e){
+		System.out.println(e);
+		bytes = new byte[0];
+	}
+	return bytes;
  }
+
  private byte[] getBytesFromImage(BufferedImage img, String format) throws IOException{
 	ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	ImageIO.write(img, format, baos);

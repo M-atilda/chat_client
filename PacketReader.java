@@ -4,12 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 
 public class PacketReader {  //Packetのdata部分(header以外)から情報を読み出す
 							 //input  : packet.getData()
 							 //output : some data (depend on packet.kind)
 
- private String byteToString (byte[] b) {
+/* private String byteToString (byte[] b) {
 	int len = b.length;
 	char[] c = new char[len];
 	for (int i = 0; i < len; i++) {
@@ -17,7 +18,17 @@ public class PacketReader {  //Packetのdata部分(header以外)から情報を読み出す
 	}
 	String s = String.valueOf(c);
 	return s;
+ }*/
+ private String byteToString(byte[] b){
+	String str = "";
+	try{
+		str = new String(b, "UTF-8");
+	}catch(UnsupportedEncodingException e){
+		System.out.println(e);
+	}
+	return str;
  }
+
  private BufferedImage getImageFromBytes(byte[] bytes) throws IOException{
 	ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 	BufferedImage img = ImageIO.read(bais);

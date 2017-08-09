@@ -262,7 +262,8 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
   Lolita(String title){
 
 		JFrame loginframe = new JFrame("Login");
-		loginframe.setBounds(WIDTH/5, HEIGHT/5, 2*WIDTH/5, HEIGHT/5);
+		loginframe.setSize(2*WIDTH/5, HEIGHT/5);
+		loginframe.setLocationRelativeTo(null);
 		loginframe.setVisible(true);
 		JPanel loginpanel = new JPanel();
 		loginpanel.add(idlabel);
@@ -653,9 +654,21 @@ class Lolita extends JFrame implements ActionListener,WindowListener{
 		JPanel panel_about_Lolita = new JPanel();
 		JTextArea area_about_Lolita = new JTextArea(15, 15);
 		area_about_Lolita.setFont(new Font("MSゴシック", Font.PLAIN, 30));
-		area_about_Lolita.setText("<<Lolitaについて>>\nWBAのメンバーのみ使用が許される\n最も便利なチャットツールである。\nLolita最高。\n(なお、アイコンは100*100ピクセル程度で頼む)\n\n<<Staff>>\nIwamoto Yuma\nNakagawa Kohei\nMaeda Tomonori");
+		area_about_Lolita.setEditable(false);
+		area_about_Lolita.setText("<<Lolitaについて>>\n");
+		try{
+			BufferedReader br = new BufferedReader(new FileReader(new File(".\\setting\\AboutLolita.txt")));
+			String str;
+			while((str = br.readLine()) != null){
+				area_about_Lolita.append(str + "\n");
+			}
+		}catch(IOException ioe){
+			System.out.println(ioe);
+			area_about_Lolita.append("読み込みエラー発生");
+		}
 		panel_about_Lolita.add(area_about_Lolita);
-		frame_about_Lolita.add(panel_about_Lolita);
+		JScrollPane sp_about_Lolita = new JScrollPane(panel_about_Lolita);
+		frame_about_Lolita.add(sp_about_Lolita);
 	} else if (cmd.equals("detail1")) {
 		JFrame frame_detail1 = new JFrame("About " + name[0]);
 		frame_detail1.setBounds(WIDTH/100, HEIGHT/100, 8*WIDTH/5, 6*HEIGHT/5);
