@@ -28,8 +28,8 @@ import java.awt.image.BufferedImage;
 
 class Lolita extends JFrame implements ActionListener,WindowListener{
 
-  static String URL = "14.3.2.39";
-  static int PORT = 1707;
+  static String URL = "*.*.*.*";
+  static int PORT = *;
   static int WIDTH;
   static int HEIGHT;
   static JLabel idlabel = new JLabel("id");
